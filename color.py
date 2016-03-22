@@ -22,12 +22,18 @@ splitby = (depth - 1) / 1000.0
 rows = int(rows)
 columns = int(columns)
 
-for R in xrange(depth):
-    for G in xrange(depth):
-        for B in xrange(depth):
-            curses.init_color(pair, int(R / splitby), int(G / splitby), int(B / splitby))
-            curses.init_pair(pair, pair, 0)
-            pair = pair + 1
+try:
+    for R in xrange(depth):
+        for G in xrange(depth):
+            for B in xrange(depth):
+                print "R=",R,"G=",G,"B=",B," pair=", pair
+                print "R=",int(R / splitby), "G=", (G / splitby) ,"B=", (B / splitby) ," pair=", pair
+                curses.init_color(pair, int(R / splitby), int(G / splitby), int(B / splitby))
+                curses.init_pair(pair, pair, 0)
+                pair = pair + 1
+except:
+        curses.endwin()
+        sys.exit(1)
 
 while True:
     img = cv.QueryFrame(capture)
