@@ -4,6 +4,7 @@ import sys
 import math
 import curses
 import signal
+import datetime
 
 def signal_handler(signal, frame):
     print 'You pressed Ctrl + C!'
@@ -34,6 +35,10 @@ try:
 except:
         curses.endwin()
         sys.exit(1)
+
+start_second = datetime.datetime.now().second
+frames = 0
+fps_text = ""
 
 while True:
     img = cv.QueryFrame(capture)
@@ -67,4 +72,13 @@ while True:
             except:
                 pass
 
+    new_second = datetime.datetime.now().second
+    if new_second != start_second:
+        fps_text = "fps: %d" % (frames)
+        frames = 0
+        start_second = new_second
+
+    stdscr.addstr(1, 25, fps_text)
+
+    frames += 1
     stdscr.refresh()
